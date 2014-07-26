@@ -32,8 +32,8 @@ $crud->setListingFields(array('month','selected_users','added_on','added_by_user
 $crud->title = 'Engagement Request';
 
 $crud->addField('city_id', 'City', 'int', array(), $city_id, 'hidden');
-$crud->addField('month', 'Month', 'int', array(), 
-	array('Select...', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'), 'select');
+$all_cycles = array('Select...', "Cycle 1", "Cycle 2", "Cycle 3", "Cycle 4", "Cycle 5");
+$crud->addField('cycle', 'Cycle', 'int', array(), $all_cycles, 'select');
 
 $crud->setFormFields();
 render('crud.php');

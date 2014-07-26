@@ -1,19 +1,20 @@
 <?php
-// if(empty($_SESSION['user_id'])) {
-// 	$url_parts = parse_url($config['site_url']);
-// 	$domain = $url_parts['scheme'] . '://' . $url_parts['host'];
-// 	header("Location: http://makeadiff.in/madapp/index.php/auth/login/".base64_encode($domain . $config['PHP_SELF']));
-// 	exit;
-// }
+if(empty($_SESSION['user_id'])) {
+	$url_parts = parse_url($config['site_url']);
+	$domain = $url_parts['scheme'] . '://' . $url_parts['host'];
+	header("Location: http://makeadiff.in/madapp/index.php/auth/login/".base64_encode($domain . $config['PHP_SELF']));
+	exit;
+}
 
 $year = 2013;
-$user_id = 14662; //$_SESSION['user_id'];
+$user_id = $_SESSION['user_id'];
 $current_user = $sql->from('User')->find($user_id);
 $city_id = $current_user['city_id'];
 $current_user['groups'] = $sql->getById("SELECT G.id,G.name,G.type,G.vertical_id FROM `Group` G 
 	INNER JOIN UserGroup UG ON G.id=UG.group_id
 	WHERE UG.user_id=$user_id AND UG.year=$year");
 
+$fellow = 0;
 foreach($current_user['groups'] as $group) {
 	if($group['vertical_id'] == 8 and $group['type'] = 'fellow') $fellow = 'hr';
 	if($group['vertical_id'] == 7 and $group['type'] = 'fellow') $fellow = 'pr';

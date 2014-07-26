@@ -23,7 +23,7 @@ if($current_user['fellow'] == 'hr') {
 $crud->setFormFields();
 
 // Lock data when recruitment is happening. What is, is.
-$lock = true;
+$lock = false;
 if($lock) {
 	$crud->allow['add'] = false;
 	$crud->allow['edit'] = false;
