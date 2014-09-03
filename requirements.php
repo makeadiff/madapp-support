@@ -1,9 +1,11 @@
 <?php
 require_once('./common.php');
 
+$city_id = $_SESSION['city_id'];
+
 $crud = new Crud('HR_Volunteer_Request');
 $all_cycles = array('Select...', "Cycle 1", "Cycle 2", "Cycle 3", "Cycle 4", "Cycle 5");
-$crud->title = 'Volunteer Requirement';
+$crud->title = 'Volunteer Requirement: ' . $sql->getOne("SELECT name FROM City WHERE id=$city_id");
 $crud->addField('cycle', 'Cycle', 'int', array(), $all_cycles, 'select');
 $crud->addField('city_id', 'City', 'int', array(), $sql->getOne("SELECT city_id FROM User WHERE id=$user_id"), 'hidden');
 
