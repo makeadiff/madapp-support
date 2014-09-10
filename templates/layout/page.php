@@ -4,11 +4,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo $title?></title>
-<link href="<?php echo $config['site_home'] ?>css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $config['site_url'] ?>css/style.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $config['site_url'] ?>images/silk_theme.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $config['site_url'] ?>bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo $config['site_url'] ?>bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-
+<link href="<?php echo $config['site_home'] ?>css/style.css" rel="stylesheet" type="text/css" />
 <?php echo $css_includes ?>
 </head>
 <body>
