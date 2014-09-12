@@ -2,9 +2,10 @@
 
 <form action="" method="post">
 <table class="table table-striped table-bordered table-hover">
-<tr><thead><th>Name</th><th>Target Amount</th><th>Actual Amount</th></thead></tr>
-<?php foreach($all_users as $user_id => $name) { ?>
-<tr><td><?php echo $name ?></td>
+<tr><thead><th>Name</th><th>City</th><th>Target Amount</th><th>Actual Amount</th></thead></tr>
+<?php foreach($all_users as $user_id => $user) { ?>
+<tr><td><?php echo $user['name'] ?></td>
+	<td><?php echo $all_cities[$user['city_id']] ?></td>
 	<td><input type="text" name="target[<?php echo $user_id ?>]" value="<?php 
 		echo (isset($data[$user_id]) ? $data[$user_id]['target_amount'] : 0) ?>" /></td>
 	<td><input type="text" name="actual[<?php echo $user_id ?>]" value="<?php 

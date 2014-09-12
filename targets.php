@@ -4,7 +4,8 @@ $cycle = 1;
 
 $current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group` INNER JOIN UserGroup ON Group.id=UserGroup.group_id WHERE UserGroup.user_id=$user_id");
 
-$all_users = $sql->getById("SELECT U.id, U.name FROM User U
+$all_cities = $sql->getById("SELECT id,name FROM City");
+$all_users = $sql->getById("SELECT U.id, U.name, U.city_id FROM User U
 	INNER JOIN UserGroup UG ON UG.user_id=U.id
 	INNER JOIN GroupHierarchy GH ON GH.group_id=UG.group_id
 	WHERE GH.reports_to_group_id IN (".implode(',', array_keys($current_user_ka_groups)).")
