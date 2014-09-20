@@ -36,3 +36,32 @@ function color() {
 	return $col[$index];
 } 
 
+
+function email($to, $subject, $body, $from = '') {
+	//return true; //:DEBUG:
+	require("Mail.php");
+	if(!$from) $from = "MADApp <madapp@makeadiff.in>";
+	
+	// SMTP info here!
+	$host = "smtp.gmail.com";
+	$username = "madapp@makeadiff.in";
+	$password = "Th3C0ll3ct|v3";
+	
+	$headers = array ('From' => $from,
+		'To' => $to,
+		'Subject' => $subject);
+	$smtp = Mail::factory('smtp',
+		array ('host' => $host,
+			'auth' => true,
+			'username' => $username,
+			'password' => $password));
+	
+	$mail = $smtp->send($to, $headers, $body);
+	
+	if (PEAR::isError($mail)) {
+		echo("<p>" . $mail->getMessage() . "</p>");
+		return false;
+	}
+	
+	return true;
+}
