@@ -1,10 +1,15 @@
 <?php 
 require('./common.php');
 
+// $user_id = 	72918; // Strat
+// $user_id = 	53407; // Fellow
+
 $user = get_user_info($user_id);
 $city_id = $user['city_id'];
 $region_id = $user['region_id'];
 $user_type = $user['group_type'];
+
+$all_cities = $sql->getById("SELECT id,name FROM City");
 
 $crud = new Crud('PR_Requirement');
 $all_types = array(
@@ -25,15 +30,19 @@ $crud->addField('added_on','Added On','datetime',array(),date('Y-m-d H:i:s'));
 $crud->addField('status','Status','varchar',array(),$all_status,'select');
 
 if($user_type == 'fellow') {
-	$crud->setListingQuery("SELECT * FROM PR_Requirement PRR INNER JOIN User ON User.id=PRR.user_id WHERE User.city_id=$city_id"); // Show submission from their city
+	$crud->setListingQuery("SELECT * FROM PR_Requirement PRR INNER JOIN User U ON U.id=PRR.added_by_user_id WHERE U.city_id=$city_id"); // Show submission from their city
 
-} elseif($user_type == 'strat' or $user_type == 'national') {
-	$crud->setListingQuery("SELECT * FROM PR_Requirement PR INNER JOIN User U ON U.id=PRC.user_id INNER JOIN City ON City.id=User.city_id WHERE City.region_id=$region_id"); // Show only their own region
+} elseif($user_type == 'strat' or $user_type == 'national' or $user_type == 'executive') {
+	$crud->setListingQuery("SELECT * FROM PR_Requirement PRR INNER JOIN User U ON U.id=PRR.added_by_user_id INNER JOIN City ON City.id=U.city_id WHERE City.region_id=$region_id"); // Show only their own region
 
 	if($region_id == 0) $cities_in_region = array_keys($all_cities);
 	else $cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
-	$cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
-	$crud->addListDataField('added_by_user_id', 'User', 'Added By', "city_id IN (".implode(',', $cities_in_region).") AND user_type='volunteer' AND status='1'");
+
+	$crud->addField('added_by_user_id', "Added By", 'enum', array(), $sql->getById("SELECT U.id,U.name 
+			FROM User U INNER JOIN UserGroup UG ON UG.user_id=U.id INNER JOIN `Group` G ON G.id=UG.group_id
+			WHERE U.city_id IN (".implode(',', $cities_in_region).") AND U.user_type='volunteer' AND U.status='1' AND 
+				(G.type != 'volunteer')"));
+
 }
 
 
@@ -48,7 +57,7 @@ if(i($QUERY, 'action') == 'add') {
 	$pr_fellow = $sql->getAssoc("SELECT U.* FROM User U INNER JOIN UserGroup UG ON U.id=UG.user_id INNER JOIN `Group` G ON G.id=UG.group_id WHERE G.vertical_id=7 AND G.type='fellow' AND U.status='1' AND U.user_type='volunteer'");
 	$pr_strat = $sql->getAssoc("SELECT U.* FROM User U INNER JOIN UserGroup UG ON U.id=UG.user_id INNER JOIN `Group` G ON G.id=UG.group_id WHERE G.vertical_id=7 AND G.type='strat' AND U.status='1' AND U.user_type='volunteer'");
 	$all_verticals = $sql->getById("SELECT id,name FROM Vertical");
-	$all_cities = $sql->getById("SELECT id,name FROM City");
+	
 
 	// $pr_fellow['email'] = 'binnyva@makeadiff.in';
 	// $pr_strat['email'] = 'cto@makeadiff.in';
