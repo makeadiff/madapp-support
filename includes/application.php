@@ -39,7 +39,7 @@ function color() {
 
 function email($to, $subject, $body, $from = '') {
 	//return true; //:DEBUG:
-	require("Mail.php");
+	//require("Mail.php");
 	if(!$from) $from = "MADApp <madapp@makeadiff.in>";
 	
 	// SMTP info here!

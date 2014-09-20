@@ -20,6 +20,8 @@ $all_status = array(
 	'approved'		=> "Approved",
 	'done'			=> "Done"
 	);
+$all_cities = $sql->getById("SELECT id,name FROM City");
+
 $crud->addField('type','Type','varchar',array(),$all_types,'select');
 $crud->addField('added_on','Added On','datetime',array(),date('Y-m-d H:i:s'));
 $crud->addField('status','Status','varchar',array(),$all_status,'select');
@@ -30,7 +32,8 @@ if($user_type == 'fellow') {
 } elseif($user_type == 'strat') {
 	$crud->setListingQuery("SELECT * FROM PR_Requirement PR INNER JOIN User U ON U.id=PRC.user_id INNER JOIN City ON City.id=User.city_id WHERE City.region_id=$region_id"); // Show only their own region
 
-	$cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
+	if($region_id == 0) $cities_in_region = array_keys($all_cities);
+	else $cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
 	$crud->addListDataField('added_by_user_id', 'User', 'Added By', "city_id IN (".implode(',', $cities_in_region).") AND user_type='volunteer' AND status='1'");
 }
 if(i($QUERY, 'action') == 'add') {
@@ -42,10 +45,10 @@ if(i($QUERY, 'action') == 'add') {
 	$pr_fellow = $sql->getAssoc("SELECT U.* FROM User U INNER JOIN UserGroup UG ON U.id=UG.user_id INNER JOIN `Group` G ON G.id=UG.group_id WHERE G.vertical_id=7 AND G.type='fellow' AND U.status='1' AND U.user_type='volunteer'");
 	$pr_strat = $sql->getAssoc("SELECT U.* FROM User U INNER JOIN UserGroup UG ON U.id=UG.user_id INNER JOIN `Group` G ON G.id=UG.group_id WHERE G.vertical_id=7 AND G.type='strat' AND U.status='1' AND U.user_type='volunteer'");
 	$all_verticals = $sql->getById("SELECT id,name FROM Vertical");
-	$all_cities = $sql->getById("SELECT id,name FROM City");
+	
+	$all_verticals[0] = 'None';
 
-	// $pr_fellow['email'] = 'binnyva@makeadiff.in';
-	// $pr_strat['email'] = 'cto@makeadiff.in';
+	//$pr_fellow['email'] = 'binnyva@makeadiff.in'; $pr_strat['email'] = 'cto@makeadiff.in';
 
 	$message = <<<END
 Hey %NAME%,
@@ -63,7 +66,7 @@ MAD Tech
 END;
 
 	$replaces = array(
-		'%VERTICAL%'	=> $all_verticals[$user['vertical_id']],
+		'%VERTICAL%'=> $all_verticals[$user['vertical_id']],
 		'%TYPE%'	=> $user['group_type'],
 		'%CITY%'	=> $all_cities[$user['city_id']],
 		'%TITLE%'	=> $QUERY['name'],
