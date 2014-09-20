@@ -7,6 +7,7 @@ $user = get_user_info($user_id);
 $city_id = $user['city_id'];
 $region_id = $user['region_id'];
 $user_type = $user['group_type'];
+$all_cities = $sql->getById("SELECT id,name FROM City");
 
 $crud = new Crud('PR_Content');
 $all_types = array(
@@ -40,7 +41,8 @@ if($user_type == 'intern') {
 } elseif($user_type == 'strat') {
 	$crud->setListingQuery("SELECT * FROM PR_Content PRC INNER JOIN User U ON U.id=PRC.user_id INNER JOIN City ON City.id=User.city_id WHERE City.region_id=$region_id"); // Show only their own region
 
-	$cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
+	if($region_id == 0) $cities_in_region = array_keys($all_cities);
+	else $cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
 	$crud->addListDataField('intern_user_id', 'User', 'Intern', "city_id IN (".implode(',', $cities_in_region).") AND user_type='volunteer' AND status='1'");
 
 } else {
