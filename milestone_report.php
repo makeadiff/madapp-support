@@ -23,6 +23,8 @@ if(i($QUERY,'format') == 'csv') {
 	$data = $sql->getAll($main_query);
 	foreach ($data as $row) {
 		$row_text = array();
+		$row['due_on'] = date('m/d/Y', strtotime($row['due_on']));
+		$row['done_on'] = date('m/d/Y', strtotime($row['done_on']));
 		foreach ($row as $key => $value) {
 			if($key == 'city_id') $value = $all_cities[$value];
 			elseif($key == 'vertical_id') $value = $all_verticals[$value];
