@@ -11,6 +11,8 @@ require_once('./common.php');
 $all_regions = $sql->getById("SELECT id,name FROM Region");
 $all_cities = $sql->getById("SELECT id,name FROM City");
 $all_verticals = $sql->getById("SELECT id,name FROM Vertical");
+$all_verticals['0'] = 'None';
+
 $main_query = "SELECT DISTINCT M.id,G.vertical_id,U.city_id,U.name,M.name AS milestone,M.due_on,M.done_on,M.status 
 	FROM `Review_Milestone` M 
 	INNER JOIN `User` U ON M.user_id=U.id
@@ -23,8 +25,8 @@ if(i($QUERY,'format') == 'csv') {
 	$data = $sql->getAll($main_query);
 	foreach ($data as $row) {
 		$row_text = array();
-		$row['due_on'] = date('m/d/Y', strtotime($row['due_on']));
-		$row['done_on'] = date('m/d/Y', strtotime($row['done_on']));
+		$row['due_on'] = ($row['due_on'] == '0000-00-00') ? '' : date('m/d/Y', strtotime($row['due_on']));
+		$row['done_on'] = ($row['done_on'] == '0000-00-00 00:00:00') ? '' : date('m/d/Y', strtotime($row['done_on']));
 		foreach ($row as $key => $value) {
 			if($key == 'city_id') $value = $all_cities[$value];
 			elseif($key == 'vertical_id') $value = $all_verticals[$value];
