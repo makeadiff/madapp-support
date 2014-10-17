@@ -65,3 +65,49 @@ function email($to, $subject, $body, $from = '') {
 	
 	return true;
 }
+
+
+/// Get the starting date of the current MAD year...
+function get_mad_year_starting_date() {
+	$this_month = intval(date('m'));
+	$months = array();
+	$start_month = 4; // April
+	$start_year = date('Y');
+	if($this_month < $start_month) $start_year = date('Y')-1;
+	return date('Y-m-d', mktime(0,0,0, $start_month, 1, $start_year));
+}
+
+/// Our Year starts on April - so get the list of months.
+function get_month_list() {
+	$starting_day = strtotime(get_mad_year_starting_date());
+	for($i = 0; $i < 12; $i++) {
+		$months[] = date('Y-m', mktime(0,0,0, date('m', $starting_day) + $i, 1, date('Y', $starting_day)));
+	}
+	return $months;
+}
+
+function get_all_cycles() {
+	$year = date('Y', strtotime(get_mad_year_starting_date()));
+	return array(
+		array(),
+		array('start' => "$year-04-01", 'end' => "$year-09-14"),
+		array('start' => "$year-09-15", 'end' => "$year-10-26"),
+		array('start' => "$year-10-27", 'end' => "$year-12-07"),
+		array('start' => "$year-12-08", 'end' => ($year+1) . "-01-18"),
+		array('start' => ($year+1) . "-01-18", 'end' => ($year+1) . "-03-31")
+	);
+}
+
+function get_cycle($date = false) {
+	if(!$date) $date = date('Y-m-d');
+	else $date = date('Y-m-d', strtotime($date));
+
+	$all_cycles = get_all_cycles();
+	foreach($all_cycles as $cycle => $cycle_data) {
+		if(isset($cycle_data['start'])) {
+			if($date >= $cycle_data['start'] and $date <= $cycle_data['end']) return $cycle;
+		}
+	}
+
+	return 0;
+}
