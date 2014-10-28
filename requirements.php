@@ -3,6 +3,9 @@ require_once('./common.php');
 
 $city_id = $_SESSION['city_id'];
 
+$current_cycle = get_cycle();
+$_GET['cycle'] = $current_cycle;
+
 $crud = new Crud('HR_Volunteer_Request');
 $all_cycles = array('Select...', "Cycle 1", "Cycle 2", "Cycle 3", "Cycle 4", "Cycle 5");
 $crud->title = 'Volunteer Requirement: ' . $sql->getOne("SELECT name FROM City WHERE id=$city_id");

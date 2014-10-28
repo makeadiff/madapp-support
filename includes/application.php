@@ -89,7 +89,7 @@ function get_month_list() {
 function get_all_cycles() {
 	$year = date('Y', strtotime(get_mad_year_starting_date()));
 	return array(
-		array(),
+		array(), // There is no cycle 0. Keep this empty.
 		array('start' => "$year-04-01", 'end' => "$year-09-14"),
 		array('start' => "$year-09-15", 'end' => "$year-10-26"),
 		array('start' => "$year-10-27", 'end' => "$year-12-07"),
