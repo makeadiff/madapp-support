@@ -11,17 +11,18 @@ $all_cities = $sql->getById("SELECT id,name FROM City");
 
 $crud = new Crud('PR_Content');
 $all_types = array(
-	'stories' => 'Stories',
-	'videos' => 'Videos',
-	'photographs' => 'Photograph',
-	'media_articles' => "Media Articles",
-	'pulse'		=> 'Pulse Plan',
-	'blog'		=> "Blog Entry",
+	'stories'		=> 'Stories',
+	'videos'		=> 'Videos',
+	'collateral'	=> 'Collateral',
+	'photographs'	=> 'Photograph',
+	'media_articles'=> "Media Articles",
+	'pulse'			=> 'Pulse Plan',
+	'blog'			=> "Blog Entry",
 	);
 $all_status = array(
-	'pending' => "Pending",
-	'approved'	=> "Approved",
-	'rejected'	=> "Rejected"
+	'pending' 		=> "Pending",
+	'approved'		=> "Approved",
+	'rejected'		=> "Rejected"
 	);
 $crud->addField('type','Type','varchar',array(),$all_types,'select');
 $crud->addField('added_on','Added On','datetime',array(),date('Y-m-d H:i:s'));

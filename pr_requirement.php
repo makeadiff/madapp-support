@@ -20,6 +20,7 @@ $all_types = array(
 	'stories'		=> 'Stories',
 	'videos'		=> 'Videos',
 	'photographs'	=> 'Photograph',
+	'collateral'	=> 'Collateral',
 	'media_articles'=> "Media Articles",
 	'pulse'			=> 'Pulse Plan',
 	'blog'			=> "Blog Entry",
