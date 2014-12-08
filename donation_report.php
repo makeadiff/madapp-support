@@ -1,5 +1,9 @@
 <?php
 require_once('./common.php');
+
+dump($config);
+exit;
+
 $server_host = 'localhost';
 if(isset($_SERVER['HTTP_HOST'])) $server_host = $_SERVER['HTTP_HOST'];
 
