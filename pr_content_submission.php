@@ -38,15 +38,26 @@ if($user_type == 'intern') {
 	$crud->addField("intern_user_id", 'Intern', 'int', array(), $user_id, 'hidden');
 
 } elseif($user_type == 'fellow') {
-	$crud->setListingQuery("SELECT * FROM PR_Content PRC INNER JOIN User U ON U.id=PRC.intern_user_id WHERE U.city_id=$city_id"); // Show only their own city
+	$crud->setListingQuery("SELECT PRC.* FROM PR_Content PRC INNER JOIN User U ON U.id=PRC.intern_user_id WHERE U.city_id=$city_id"); // Show only their own city
 	$crud->addField('intern_user_id', "Intern", 'enum', array(), $sql->getById("SELECT U.id,U.name 
 			FROM User U INNER JOIN UserGroup UG ON UG.user_id=U.id INNER JOIN `Group` G ON G.id=UG.group_id 
 			WHERE U.city_id=$city_id AND U.user_type='volunteer' AND U.status='1' AND G.vertical_id=7"));
 
 } else {
-	$crud->setListingQuery("SELECT * FROM PR_Content PRC INNER JOIN User U ON U.id=PRC.intern_user_id INNER JOIN City ON City.id=U.city_id WHERE City.region_id=$region_id"); // Show only their own region
-	$crud->addField('intern_user_id', "Intern", 'enum', array(), $sql->getById("SELECT U.id,U.name 
-			FROM User U INNER JOIN UserGroup UG ON UG.user_id=U.id INNER JOIN `Group` G ON G.id=UG.group_id
+	if($region_id) {
+		$crud->setListingQuery("SELECT PRC.* FROM PR_Content PRC 
+				INNER JOIN User U ON U.id=PRC.intern_user_id 
+				INNER JOIN City ON City.id=U.city_id 
+				WHERE City.region_id=$region_id"); // Show only their own region
+	} else {
+		$crud->setListingQuery("SELECT PRC.* FROM PR_Content PRC 
+				INNER JOIN User U ON U.id=PRC.intern_user_id 
+				INNER JOIN City ON City.id=U.city_id"); // Show all things nationally
+	}
+
+	$crud->addField('intern_user_id', "Intern", 'enum', array(), $sql->getById("SELECT U.id,U.name FROM User U 
+			INNER JOIN UserGroup UG ON UG.user_id=U.id 
+			INNER JOIN `Group` G ON G.id=UG.group_id
 			WHERE U.city_id IN (".implode(',', $cities_in_region).") AND U.user_type='volunteer' AND U.status='1' AND G.vertical_id=7"));
 }
 
