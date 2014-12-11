@@ -5,7 +5,6 @@ require('./common.php');
 // $user_id = 34734; // PR Fellow, Cheannai
 // $user_id = 727; // PR Strat, South
 
-
 $user = get_user_info($user_id);
 $city_id = $user['city_id'];
 $region_id = $user['region_id'];
@@ -62,7 +61,12 @@ if($user_type == 'fellow') {
 // Strat or Above View.
 } elseif($user_type == 'strat' or $user_type == 'national' or $user_type == 'executive') {
 	$crud->addField('delivered_on','Delivered On','date',array(),'','hidden');
-	$crud->setListingQuery("SELECT PRR.* FROM PR_Requirement PRR INNER JOIN User U ON U.id=PRR.added_by_user_id INNER JOIN City ON City.id=U.city_id WHERE City.region_id=$region_id ORDER BY PRR.added_on DESC"); // Show only their own region
+
+	if($region_id) $region_check = "WHERE City.region_id=$region_id ";
+	$crud->setListingQuery("SELECT PRR.* FROM PR_Requirement PRR 
+								INNER JOIN User U ON U.id=PRR.added_by_user_id 
+								INNER JOIN City ON City.id=U.city_id 
+								$region_check ORDER BY PRR.added_on DESC"); // Show only their own region
 
 	if($region_id == 0) $cities_in_region = array_keys($all_cities);
 	else $cities_in_region = $sql->getCol("SELECT id FROM City WHERE region_id=$region_id");
@@ -78,15 +82,13 @@ if(isset($QUERY['added_by_user_id'])) {
 	$pr_fellow = $sql->getAssoc("SELECT U.* FROM User U 
 			INNER JOIN UserGroup UG ON U.id=UG.user_id 
 			INNER JOIN `Group` G ON G.id=UG.group_id 
-			WHERE G.vertical_id=7 AND G.type='strat' AND U.status='1' AND U.user_type='volunteer' AND U.city_id={$adding_fellow['city_id']}");
+			WHERE G.vertical_id=7 AND G.type='fellow' AND U.status='1' AND U.user_type='volunteer' AND U.city_id={$adding_fellow['city_id']}");
 	$pr_strat = $sql->getAssoc("SELECT U.* FROM User U 
 			INNER JOIN UserGroup UG ON U.id=UG.user_id 
 			INNER JOIN `Group` G ON G.id=UG.group_id 
 			INNER JOIN City ON City.id=U.city_id 
 			WHERE G.vertical_id=7 AND G.type='strat' AND U.status='1' AND U.user_type='volunteer' AND City.region_id={$adding_fellow['region_id']}");
 	$all_verticals = $sql->getById("SELECT id,name FROM Vertical");
-	$pr_fellow['email'] = 'binnyva@makeadiff.in';
-	$pr_strat['email'] = 'cto@makeadiff.in';
 }
 
 
@@ -123,6 +125,7 @@ END;
 	);
 
 	foreach (array($pr_fellow, $pr_strat) as $person) {
+		if(!$person) continue;
 		$more_replaces = array(
 			'%NAME%'	=> $person['name'],
 			'%EMAIL%'	=> $person['email'],
@@ -132,7 +135,7 @@ END;
 
 		$message = str_replace(array_keys($replaces), array_values($replaces), $message);
 
-		$success = @email($person['email'], "PR Requirement", $message);
+		$success = @email($person['email'], "PR Requirement", $message); // :DEBUG: This should be active in production
 	}
 } elseif(i($QUERY, 'action') == 'edit_save') {
 	$old_data = $sql->getAssoc("SELECT * FROM PR_Requirement WHERE id=$QUERY[id]");
@@ -178,9 +181,7 @@ END;
 
 		$message = str_replace(array_keys($replaces), array_values($replaces), $message);
 
-		//dump($person['email'], "PR Requirement Updated", $message);
-
-		$success = @email($person['email'], "PR Requirement", $message);
+		$success = @email($person['email'], "PR Requirement", $message); //:DEBUG: Should be active in production
 	}
 }
 
