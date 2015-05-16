@@ -2,7 +2,7 @@
 require('./common.php');
 
 header("Content-type: text/plain");
-//header('Content-Disposition: attachment; filename="User.csv"');
+header('Content-Disposition: attachment; filename="User.csv"');
 $year = '2014';
 
 $data = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,C.name as city_name,U.sex,U.job_status,Center.name AS center_name, GROUP_CONCAT(DISTINCT G.name SEPARATOR ',') AS groups
