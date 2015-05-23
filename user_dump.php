@@ -26,8 +26,7 @@ $data = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,C.name as city
 			$join
 		WHERE U.status='1' AND U.user_type='volunteer' AND UG.year='$year' $where
 		GROUP BY UG.user_id
-		ORDER BY U.id
-		LIMIT 0, 10");
+		ORDER BY U.id");
 
 foreach($data as $row) {
 	print '"' . implode('","', $row) . "\"\n";
