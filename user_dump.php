@@ -18,7 +18,7 @@ if($include_center) {
 	$where = " AND B.year='$year'";
 }
 
-$data = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,C.name as city_name,U.sex,U.job_status, GROUP_CONCAT(DISTINCT G.name SEPARATOR ',') AS groups $select
+$data = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,C.name as city_name,U.sex,U.job_status,edu_institution,company GROUP_CONCAT(DISTINCT G.name SEPARATOR ',') AS groups $select
 		FROM `User` U 
 			INNER JOIN City C ON C.id=U.city_id 
 			INNER JOIN UserGroup UG ON UG.user_id=U.id
