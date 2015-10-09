@@ -1,4 +1,6 @@
 <?php
+
+if($config['server_host'] == 'cli') $_SESSION['user_id'] = 1;
 if(empty($_SESSION['user_id'])) {
 	$url_parts = parse_url($config['site_url']);
 	$domain = $url_parts['scheme'] . '://' . $url_parts['host'];
@@ -99,15 +101,19 @@ function get_all_cycles() {
 }
 
 function get_cycle($date = false) {
-	if(!$date) $date = date('Y-m-d');
-	else $date = date('Y-m-d', strtotime($date));
+	global $sql;
+	
+	// if(!$date) $date = date('Y-m-d');
+	// else $date = date('Y-m-d', strtotime($date));
 
-	$all_cycles = get_all_cycles();
-	foreach($all_cycles as $cycle => $cycle_data) {
-		if(isset($cycle_data['start'])) {
-			if($date >= $cycle_data['start'] and $date <= $cycle_data['end']) return $cycle;
-		}
-	}
+	// $all_cycles = get_all_cycles();
+	// foreach($all_cycles as $cycle => $cycle_data) {
+	// 	if(isset($cycle_data['start'])) {
+	// 		if($date >= $cycle_data['start'] and $date <= $cycle_data['end']) return $cycle;
+	// 	}
+	// }
 
-	return 0;
+	// return 0;
+
+	return $sql->getOne("SELECT MAX(id) FROM SS_Survey_Event");
 }

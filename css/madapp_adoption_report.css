@@ -1,0 +1,18 @@
+ 
+.batch_loader {
+	width : 160px;
+	height : 230px;
+	float : left;
+	margin-right : 70px;
+	margin-left : 20px;
+	margin-bottom : 50px;
+}
+
+h2.label{
+	font-family:BebasNeueRegular,Arial;
+	margin-top: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: xx-large;
+	color:#f70048;
+}
