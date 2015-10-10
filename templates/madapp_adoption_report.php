@@ -9,7 +9,7 @@ var centers = <?php echo json_encode($centers); ?>;
 <?php 
 $html->buildInput("city_id", 'City', 'select', $city_id, array('options' => $all_cities));
 $html->buildInput("center_id", 'Center', 'select', $center_id, array('options' => $centers[$city_id]));
-$html->buildInput("display_type", 'Report', 'select', '', array('options' => array(
+$html->buildInput("display_type", 'Report', 'select', $display_type, array('options' => array(
 		'volunteer_attendance' => 'Volunteer Attendance Report', 
 		'student_attendance' => 'Student Attendance Report')
 	));
