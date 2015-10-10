@@ -17,7 +17,7 @@ foreach ($all_centers as $center_id => $center) {
 	$centers[$center['city_id']][$center_id] = $center['name'];
 }
 
-$city_id = i($QUERY, 'city_id', 0);
+$city_id = i($QUERY, 'city_id', 1);
 $center_id = i($QUERY, 'center_id', 0);
 $display_type = i($QUERY, 'display_type', 'volunteer_attendance');
 $all_batches = array();
