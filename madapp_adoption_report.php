@@ -15,15 +15,23 @@ foreach ($all_centers as $center_id => $center) {
 	if(!isset($centers[$center['city_id']])) $centers[$center['city_id']] = array();
 
 	$centers[$center['city_id']][$center_id] = $center['name'];
+	if(!isset($centers[$center['city_id']][0])) $centers[$center['city_id']][0] = 'Any';
 }
+
 
 $city_id = i($QUERY, 'city_id', 1);
 $center_id = i($QUERY, 'center_id', 0);
 $display_type = i($QUERY, 'display_type', 'volunteer_attendance');
 $all_batches = array();
+$all_centers_data = array();
 
-if($center_id) {
-	$batches = $sql->getAll("SELECT id, day, class_time FROM Batch WHERE center_id=$center_id AND year=$year AND status='1'");
+if(isset($QUERY['action'])) {
+	$center_check = '';
+	if($center_id) $center_check = " AND center_id=$center_id";
+	$batches = $sql->getAll("SELECT B.id, B.day, B.class_time, B.center_id 
+			FROM Batch B INNER JOIN Center C ON C.id=B.center_id 
+			WHERE B.year=$year AND B.status='1' AND C.city_id=$city_id $center_check");
+
 	
 	foreach ($batches as $b) {
 		$batch_id = $b['id'];
@@ -33,6 +41,15 @@ if($center_id) {
 			'volunteer_attendance'	=> 0,
 			'student_attendance'	=> 0,
 		);
+
+		if(!isset($all_centers_data[$b['center_id']])) {
+			$all_centers_data[$b['center_id']] = array(
+				'name'					=> $all_centers[$b['center_id']]['name'],
+				'classes_total'			=> 0,
+				'volunteer_attendance'	=> 0,
+				'student_attendance'	=> 0,
+			);
+		}
 
 		$all_classes = $sql->getAll("SELECT C.id, UC.id AS user_class_id, C.status, C.level_id, C.class_on, UC.user_id, UC.status AS user_status, UC.substitute_id, student_id, participation
 				FROM Class C
@@ -47,9 +64,17 @@ if($center_id) {
 			if($c['class_on'] > date("Y-m-d H:i:s")) continue; // Don't count classes not happened yet.
 
 			$all_batches[$batch_id]['classes_total']++;
+			$all_centers_data[$b['center_id']]['classes_total']++;
 
-			if($c['user_status'] != 'projected') $all_batches[$batch_id]['volunteer_attendance']++;
-			if($c['student_id']) $all_batches[$batch_id]['student_attendance']++;
+			if($c['user_status'] != 'projected') {
+				$all_batches[$batch_id]['volunteer_attendance']++;
+				$all_centers_data[$b['center_id']]['volunteer_attendance']++;
+			}
+			if($c['student_id']) {
+				$all_batches[$batch_id]['student_attendance']++;
+				$all_centers_data[$b['center_id']]['student_attendance']++;
+			}
+			
 		}
 	}
 }

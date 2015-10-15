@@ -19,6 +19,7 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 </form><br /><br />
 
 <?php
+if($center_id == 0) $all_batches = $all_centers_data;
 if($all_batches) {
 	foreach ($all_batches as $batch_id => $batch) {
 		$count = $batch[$display_type];
