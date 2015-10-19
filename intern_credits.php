@@ -25,15 +25,21 @@ if(i($QUERY,'action') == 'change') {
 	}
 }
 
-$current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group` INNER JOIN UserGroup ON Group.id=UserGroup.group_id WHERE UserGroup.user_id=$user_id");
+/// Enable to show only interns of the vertical of the current users
+$current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group` 
+	INNER JOIN UserGroup ON Group.id=UserGroup.group_id 
+	WHERE UserGroup.user_id=$user_id");
+$subordinate_groups = $sql->getCol("SELECT G.id FROM `Group` G
+	INNER JOIN GroupHierarchy GH ON GH.group_id=G.id 
+	WHERE GH.reports_to_group_id IN (" . implode(",", array_keys($current_user_ka_groups)) . ")");
 
 $crud = new Crud('User');
 $crud->setListingQuery("SELECT DISTINCT U.id,U.name,UC.credit AS admin_credit,U.phone FROM User U
 	INNER JOIN UserGroup UG ON UG.user_id=U.id
 	LEFT JOIN UserCredit UC ON UC.user_id=U.id AND DATE_FORMAT(UC.added_on, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
-	INNER JOIN GroupHierarchy GH ON GH.group_id=UG.group_id
-	WHERE GH.reports_to_group_id IN (".implode(',', array_keys($current_user_ka_groups)).")
-	AND U.status='1' AND U.user_type='volunteer' AND U.city_id=$city_id
+	WHERE U.status='1' AND U.user_type='volunteer'
+	AND U.city_id=$city_id
+	AND UG.group_id IN (".implode(',', $subordinate_groups).")
 	ORDER BY U.name"); //  AND (DATE_FORMAT(UC.added_on, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m') OR ISNULL(UC.added_on))
 
 

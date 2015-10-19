@@ -20,18 +20,19 @@ for($i = 4; $i <= 15; $i++) {
 } 
 
 
-$city_check = " AND U.city_id=$city_id";
-$vertical_check = "";
 /// Enable to show only interns of the vertical of the current users
-$current_user_ka_vertical = $sql->getCol("SELECT Group.vertical_id FROM `Group` INNER JOIN UserGroup ON Group.id=UserGroup.group_id WHERE UserGroup.user_id=$user_id");
-if($current_user_ka_vertical) $vertical_check = " AND G.vertical_id IN (".implode(',', array_keys($current_user_ka_vertical)).")";
+$current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group` 
+	INNER JOIN UserGroup ON Group.id=UserGroup.group_id 
+	WHERE UserGroup.user_id=$user_id");
+$subordinate_groups = $sql->getCol("SELECT G.id FROM `Group` G
+	INNER JOIN GroupHierarchy GH ON GH.group_id=G.id 
+	WHERE GH.reports_to_group_id IN (" . implode(",", array_keys($current_user_ka_groups)) . ")");
 
 $all_interns = $sql->getAll("SELECT DISTINCT U.id, U.name FROM User U
 	INNER JOIN UserGroup UG ON U.id=UG.user_id 
-	INNER JOIN `Group` G ON G.id=UG.group_id
 	WHERE U.status='1' AND U.user_type='volunteer'
-	$city_check $vertical_check
-	AND G.type='volunteer'
+	AND U.city_id=$city_id
+	AND UG.group_id IN (" . implode(",", $subordinate_groups) . ")
 	ORDER BY U.name");
 
 $user_data = array();
