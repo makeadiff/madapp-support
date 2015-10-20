@@ -27,6 +27,11 @@ $current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group
 $subordinate_groups = $sql->getCol("SELECT G.id FROM `Group` G
 	INNER JOIN GroupHierarchy GH ON GH.group_id=G.id 
 	WHERE GH.reports_to_group_id IN (" . implode(",", array_keys($current_user_ka_groups)) . ")");
+$hc_group = 5;
+if(in_array($hc_group, array_keys($current_user_ka_groups))) { // If the current guy is an HC multiplier, 
+	$intern_groups = $sql->getCol("SELECT id FROM `Group` WHERE status='1' AND type='volunteer' AND group_type='normal' AND vertical_id!='3' AND vertical_id!='5'");
+	$subordinate_groups = array_merge($subordinate_groups, $intern_groups);
+}
 
 $all_interns = $sql->getAll("SELECT DISTINCT U.id, U.name FROM User U
 	INNER JOIN UserGroup UG ON U.id=UG.user_id 
