@@ -29,7 +29,7 @@ $subordinate_groups = $sql->getCol("SELECT G.id FROM `Group` G
 	WHERE GH.reports_to_group_id IN (" . implode(",", array_keys($current_user_ka_groups)) . ")");
 $hc_group = 5;
 if(in_array($hc_group, array_keys($current_user_ka_groups))) { // If the current guy is an HC multiplier, 
-	$intern_groups = $sql->getCol("SELECT id FROM `Group` WHERE status='1' AND type='volunteer' AND group_type='normal' AND vertical_id!='3' AND vertical_id!='5'");
+	$intern_groups = $sql->getCol("SELECT id FROM `Group` WHERE status='1' AND type='volunteer' AND group_type='normal' AND vertical_id!='3' AND vertical_id!='5'"); // All interns except Ed support and Propel
 	$subordinate_groups = array_merge($subordinate_groups, $intern_groups);
 }
 
