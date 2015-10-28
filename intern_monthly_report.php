@@ -44,7 +44,7 @@ $user_data = array();
 foreach ($all_interns as $u) {
 	if(!isset($user_data[$u['id']])) $user_data[$u['id']] = array('name' => $u['name']);
 
-	$all_credits = $sql->getById("SELECT DATE_FORMAT(added_on, '%Y-%m') AS id, credit FROM UserCredit WHERE user_id=$u[id]");
+	$all_credits = $sql->getById("SELECT DATE_FORMAT(added_on, '%Y-%m') AS id, credit,comment FROM UserCredit WHERE user_id=$u[id]");
 	foreach ($all_months as $key => $name) {
 		if(isset($all_credits[$key]))
 			$user_data[$u['id']][$key] = $all_credits[$key];

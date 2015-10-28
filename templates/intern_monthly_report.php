@@ -8,8 +8,9 @@
 <?php foreach($all_months as $key => $name) {
 	echo "<td>";
 	if(isset($user[$key])) {
-		if($user[$key] == '1') echo '<span class="positive">+</span>';
-		else echo '<span class="negative">-</span>';
+		$credit = $user[$key];
+		if($credit['credit'] == '1') echo '<span class="positive box" title="'.$credit['comment'].'">+</span>';
+		else echo '<span class="negative box" title="'.$credit['comment'].'">-</span>';
 	}
 	else echo '&nbsp;';
 	echo "</td>";

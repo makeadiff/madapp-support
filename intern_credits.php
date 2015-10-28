@@ -2,7 +2,7 @@
 require_once('./common.php');
 
 if(i($QUERY,'action') == 'change') {
-	$new_credit = intval($QUERY['current']);
+	$new_credit = ($QUERY['credit'] == "+ Positive") ? "1" : "-1" ;
 
 	// $sql->execQuery("UPDATE User SET admin_credit=$new_credit WHERE id=$QUERY[user_id]");
 
@@ -11,6 +11,7 @@ if(i($QUERY,'action') == 'change') {
 	if($exists) {
 		$sql->update("UserCredit", array(
 			'credit'	=> $new_credit,
+			'comment'	=> $QUERY['comment'],
 			'credit_assigned_by_user_id'	=> $_SESSION['user_id'],
 			'added_on'	=> 'NOW()',	
 		), "id=$exists");
@@ -18,6 +19,7 @@ if(i($QUERY,'action') == 'change') {
 		$sql->insert("UserCredit",array(
 			'user_id' 	=> $QUERY['user_id'],
 			'credit'	=> $new_credit,
+			'comment'	=> $QUERY['comment'],
 			'credit_assigned_by_user_id'	=> $_SESSION['user_id'],
 			'added_on'	=> 'NOW()',
 			'year'		=> '2015',
@@ -33,8 +35,7 @@ $subordinate_groups = $sql->getCol("SELECT G.id FROM `Group` G
 	INNER JOIN GroupHierarchy GH ON GH.group_id=G.id 
 	WHERE GH.reports_to_group_id IN (" . implode(",", array_keys($current_user_ka_groups)) . ")");
 
-$crud = new Crud('User');
-$crud->setListingQuery("SELECT DISTINCT U.id,U.name,UC.credit AS admin_credit,U.phone FROM User U
+$all_users = $sql->getAll("SELECT DISTINCT U.id,U.name,UC.credit AS admin_credit,U.phone,UC.comment FROM User U
 	INNER JOIN UserGroup UG ON UG.user_id=U.id
 	LEFT JOIN UserCredit UC ON UC.user_id=U.id AND DATE_FORMAT(UC.added_on, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
 	WHERE U.status='1' AND U.user_type='volunteer'
@@ -42,26 +43,4 @@ $crud->setListingQuery("SELECT DISTINCT U.id,U.name,UC.credit AS admin_credit,U.
 	AND UG.group_id IN (".implode(',', $subordinate_groups).")
 	ORDER BY U.name"); //  AND (DATE_FORMAT(UC.added_on, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m') OR ISNULL(UC.added_on))
 
-
-$crud->title = 'Volunteer Credits';
-
-$credit = '"<div class=\"btn-group\">
-<span class=\"btn btn-default " . (($row["admin_credit"] == 0 or $row["admin_credit"] == "") ? "active" : "") ."\" href=\"#\"> No Data</span>
-<a class=\"btn btn-success " . (($row["admin_credit"] > 0) ? "active" : "") ."\" href=\"?action=change&amp;user_id=$row[id]&amp;current=1\">+ Positive</a>
-<a class=\"btn btn-danger " . (($row["admin_credit"] < 0) ? "active" : "") . "\" href=\"?action=change&amp;user_id=$row[id]&amp;current=-1\">- Negative</a>
-</div>"';
-$crud->addField('credit_status', 'Credit', 'virtual', array(), array('html'=> $credit));
-
-$crud->setListingFields(array('name','credit_status'));
-
-$crud->setFormFields();
-
-$lock = true;
-if($lock) {
-	$crud->allow['add'] = false;
-	$crud->allow['edit'] = false;
-	$crud->allow['delete'] = false;
-	$crud->allow['status_change'] = false;
-}
-
-render('crud.php');
+render();
