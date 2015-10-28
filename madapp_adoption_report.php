@@ -7,7 +7,7 @@ $days = array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 $year_start = $year . '-04-01 00:00:00';
 $year_end = intval($year+1) . '-03-31 00:00:00';
 
-$all_cities = $sql->getById("SELECT id,name FROM City");
+$all_cities = $sql->getById("SELECT id,name FROM City ORDER BY name");
 $all_cities[0] = 'Any';
 $all_centers = $sql->getById("SELECT id,name,city_id FROM Center WHERE status='1'");
 
