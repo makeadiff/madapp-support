@@ -85,7 +85,7 @@ if(isset($QUERY['action'])) {
 				$all_centers_data[$b['center_id']]['volunteer_attendance']++;
 				$all_cities_data[$b['city_id']]['volunteer_attendance']++;
 			}
-			if($c['student_id']) {
+			if($c['student_id'] or $c['status'] == 'cancelled') {
 				$all_batches[$batch_id]['student_attendance']++;
 				$all_centers_data[$b['center_id']]['student_attendance']++;
 				$all_cities_data[$b['city_id']]['student_attendance']++;
