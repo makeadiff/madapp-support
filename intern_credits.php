@@ -27,6 +27,8 @@ if(i($QUERY,'action') == 'change') {
 	}
 }
 
+$template->title = 'Volunteer Credit';
+
 /// Enable to show only interns of the vertical of the current users
 $current_user_ka_groups = $sql->getById("SELECT Group.id, Group.name FROM `Group` 
 	INNER JOIN UserGroup ON Group.id=UserGroup.group_id 

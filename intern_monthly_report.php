@@ -5,7 +5,7 @@ $all_citis = $sql->getById("SELECT id,name FROM City");
 
 $verticals_with_interns = array(6,7,8,10,13); // Discover, HR, PR, Events, CR
 
-$title = 'Intern Monthly Credit Report';
+$template->title = 'volunteer Monthly Credit Report';
 
 $all_months = array();
 $this_year = $year;
