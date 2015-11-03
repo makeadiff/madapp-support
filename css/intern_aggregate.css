@@ -1,0 +1,13 @@
+.positive {
+	background-color: green;
+}
+
+.negative {
+	background-color: red;
+}
+
+.box {
+	color: white;
+	text-align: center;
+	padding:0 5px;
+}

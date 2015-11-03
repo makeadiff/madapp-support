@@ -23,7 +23,7 @@ for($i=4; $i<=15; $i++) {
 
 $city_id = i($QUERY, 'city_id', 1);
 $vertical_id = i($QUERY, 'vertical_id', 0);
-$month = i($QUERY, 'month', date('Y-m-d'));
+$month = i($QUERY, 'month', date('Y-m-01'));
 
 $template->title = 'Volunteer Credit Aggregate for ' .  date('F Y', strtotime($month));
 
