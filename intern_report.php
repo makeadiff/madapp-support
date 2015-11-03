@@ -1,9 +1,8 @@
 <?php
 require_once('./common.php');
 
-$all_citis = $sql->getById("SELECT id,name FROM City");
-
-$verticals_with_interns = array(6,7,8,10,13); // Discover, HR, PR, Events, CR
+// $all_cities = $sql->getById("SELECT id,name FROM City");
+$all_verticals_with_interns = array(6=>'Discover',7=>'HR',8=>'PR',10=>'Events',13=>'CR');
 
 /// Enable to show only interns of the vertical of the current users
 // $current_user_ka_vertical = $sql->getCol("SELECT Group.vertical_id FROM `Group` INNER JOIN UserGroup ON Group.id=UserGroup.group_id WHERE UserGroup.user_id=$user_id");
@@ -15,7 +14,7 @@ $crud->title = 'Intern Credit Report';
 $total_sql = "SELECT COUNT(U.id) FROM User U
 	INNER JOIN UserGroup UG ON U.id=UG.user_id 
 	INNER JOIN `Group` G ON G.id=UG.group_id
-	WHERE U.status='1' AND U.user_type='volunteer' AND G.vertical_id IN (".implode(',',$verticals_with_interns).") 
+	WHERE U.status='1' AND U.user_type='volunteer' AND G.vertical_id IN (".implode(',',array_keys($all_verticals_with_interns)).") 
 	AND U.city_id=%id% AND G.type='volunteer'";
 
 $positive_sql = $total_sql . " AND U.admin_credit >= 0";
