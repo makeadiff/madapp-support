@@ -3,7 +3,7 @@ require_once('./common.php');
 
 $all_citis = $sql->getById("SELECT id,name FROM City");
 
-$verticals_with_interns = array(6,7,8,10,13); // Discover, HR, PR, Events, CR
+$verticals_with_interns = array(6,7,8,10,12, 13); // Discover, HR, PR, Events, CFR, CR
 
 $template->title = 'Volunteer Monthly Credit Report';
 
