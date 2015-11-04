@@ -8,8 +8,8 @@ $total = 0;
 ?>
 <tr>
 <td><?php echo date('Y F', strtotime($month.'-01')); ?></td>
-<?php foreach($all_verticals as $vid=>$v) { ?><td><?php echo i($d, $vid, 0); $total += i($d, $vid, 0); ?></td><?php } ?>
-<td><?php echo $total; ?></td>
+<?php foreach($all_verticals as $vid=>$v) { ?><td><a href="attrition_listing.php?vertical_id=<?php echo $vid ?>&amp;month=<?php echo $month ?>&amp;city_id=<?php echo $city_id ?>"><?php echo i($d, $vid, 0); $total += i($d, $vid, 0); ?></a></td><?php } ?>
+<td><a href="attrition_listing.php?&amp;month=<?php echo $month ?>&amp;city_id=<?php echo $city_id ?>"><?php echo $total; ?></a></td>
 </tr>
 
 <?php } ?>

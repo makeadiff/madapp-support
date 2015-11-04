@@ -10,9 +10,9 @@ $all_verticals = $sql->getById("SELECT id,name FROM Vertical WHERE id IN (3,5,6,
 $data = $sql->getAll("SELECT DISTINCT U.id,U.name,U.city_id,U.user_type,U.left_on,C.name AS city_name,DATE_FORMAT(U.left_on,'%Y-%m') AS month, G.name AS group_name, G.vertical_id
 		FROM User U 
 		INNER JOIN City C ON C.id=U.city_id 
-		LEFT JOIN UserGroup UG ON UG.user_id=U.id
+		LEFT JOIN UserGroup UG ON UG.user_id=U.id AND UG.year='$year'
 		INNER JOIN `Group` G ON G.id=UG.group_id
-		WHERE (U.user_type='let_go' OR U.user_type='alumni') AND U.left_on > '$year-04-01 00:00:00' AND city_id=1
+		WHERE (U.user_type='let_go' OR U.user_type='alumni') AND U.left_on > '$year-04-01 00:00:00' AND city_id=$city_id
 		ORDER BY U.left_on");
 
 $attrition_data = array();
