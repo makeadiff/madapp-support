@@ -10,6 +10,7 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 ?>
 </form><br /><br />
 
+<?php if($all_users) { ?>
 <table class="table table-striped">
 <tr><th>Name</th><?php foreach($all_months as $key => $name) { echo "<th>" . $name . "</th>"; } ?></tr>
 <?php foreach($all_users as $user_id => $user_name) { ?>
@@ -28,3 +29,4 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 </tr>
 <?php } ?>
 </table>
+<?php } ?>

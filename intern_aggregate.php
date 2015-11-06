@@ -26,6 +26,8 @@ $vertical_id = i($QUERY, 'vertical_id', 0);
 $template->title = 'Volunteer Credit Aggregate';
 
 $data = array();
+$all_users = array();
+
 if(isset($QUERY['action'])) {
 	if($vertical_id) $vertical_ids = array($vertical_id);
 	else $vertical_ids = array_keys($all_verticals_with_interns);
@@ -39,8 +41,6 @@ if(isset($QUERY['action'])) {
 		AND G.vertical_id IN (".implode(',', $vertical_ids).")
 		ORDER BY U.name");
 
-	$data = array();
-	$all_users = array();
 	foreach ($raw_data as $row) {
 		if(!isset($all_users[$row['id']])) $all_users[$row['id']] = $row['name'];
 
