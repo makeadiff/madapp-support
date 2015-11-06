@@ -95,4 +95,9 @@ if(isset($QUERY['action'])) {
 	}
 }
 
-render();
+$format = i($QUERY,'format', '');
+if($format == 'csv') {
+	$format = 'csv.php';
+	$template->options['insert_layout'] = false;
+}
+render($format);
