@@ -1,32 +1,35 @@
 <?php
+if(isset($QUERY['format']) and $QUERY['format'] == 'csv') {
+	// Skip login
+} else {
+	if($config['server_host'] == 'cli') $_SESSION['user_id'] = 1;
+	if(empty($_SESSION['user_id'])) {
+		$url_parts = parse_url($config['site_url']);
+		$domain = $url_parts['scheme'] . '://' . $url_parts['host'];
+		$madapp_url = "http://makeadiff.in/madapp/";
+		if(strpos($config['site_home'], 'localhost') !== false) $madapp_url = "http://localhost/Projects/Madapp/";
 
-if($config['server_host'] == 'cli') $_SESSION['user_id'] = 1;
-if(empty($_SESSION['user_id'])) {
-	$url_parts = parse_url($config['site_url']);
-	$domain = $url_parts['scheme'] . '://' . $url_parts['host'];
-	$madapp_url = "http://makeadiff.in/madapp/";
-	if(strpos($config['site_home'], 'localhost') !== false) $madapp_url = "http://localhost/Projects/Madapp/";
+		header("Location: " . $madapp_url . "index.php/auth/login/" . base64_encode($domain . $config['PHP_SELF']));
+		exit;
+	}
 
-	header("Location: " . $madapp_url . "index.php/auth/login/" . base64_encode($domain . $config['PHP_SELF']));
-	exit;
+	$year = 2015;
+	$user_id = $_SESSION['user_id'];
+	$current_user = $sql->from('User')->find($user_id);
+	$city_id = $current_user['city_id'];
+	$current_user['groups'] = $sql->getById("SELECT G.id,G.name,G.type,G.vertical_id FROM `Group` G 
+		INNER JOIN UserGroup UG ON G.id=UG.group_id
+		WHERE UG.user_id=$user_id AND UG.year=$year");
+
+	$fellow = 0;
+	foreach($current_user['groups'] as $group) {
+		if($group['vertical_id'] == 8 and $group['type'] = 'fellow') $fellow = 'hr';
+		if($group['vertical_id'] == 7 and $group['type'] = 'fellow') $fellow = 'pr';
+	}
+	$current_user['fellow'] = $fellow;
+
+	//$sql->from('UserGroup')->select('group_id')->where(array('user_id'=>$user_id, 'year'=>$year))->get('col');
 }
-
-$year = 2015;
-$user_id = $_SESSION['user_id'];
-$current_user = $sql->from('User')->find($user_id);
-$city_id = $current_user['city_id'];
-$current_user['groups'] = $sql->getById("SELECT G.id,G.name,G.type,G.vertical_id FROM `Group` G 
-	INNER JOIN UserGroup UG ON G.id=UG.group_id
-	WHERE UG.user_id=$user_id AND UG.year=$year");
-
-$fellow = 0;
-foreach($current_user['groups'] as $group) {
-	if($group['vertical_id'] == 8 and $group['type'] = 'fellow') $fellow = 'hr';
-	if($group['vertical_id'] == 7 and $group['type'] = 'fellow') $fellow = 'pr';
-}
-$current_user['fellow'] = $fellow;
-
-//$sql->from('UserGroup')->select('group_id')->where(array('user_id'=>$user_id, 'year'=>$year))->get('col');
 
 function color() {
 	static $index = 0;
