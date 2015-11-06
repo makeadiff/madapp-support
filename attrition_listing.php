@@ -10,7 +10,7 @@ $month = i($QUERY, 'month');
 $vertical_check = '';
 if($vertical_id) $vertical_check = " AND G.vertical_id=$vertical_id";
 
-$all_vols = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,U.left_on
+$all_vols = $sql->getAll("SELECT DISTINCT U.id,U.name,U.email,U.phone,U.left_on,U.reason_for_leaving
 		FROM User U 
 		LEFT JOIN UserGroup UG ON U.id=UG.user_id AND UG.year='$year'
 		INNER JOIN `Group` G ON UG.group_id=G.id
