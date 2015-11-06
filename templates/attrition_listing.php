@@ -10,7 +10,7 @@
 <td><?php echo $row['email'] ?></td>
 <td><?php echo $row['phone'] ?></td>
 <td><?php echo date('d F, Y', strtotime($row['left_on'])); ?></td>
-<td><?php echo $row['reason_for_leavin'] ?></td>
+<td><?php echo $row['reason_for_leaving'] ?></td>
 </tr>
 
 <?php } ?>
