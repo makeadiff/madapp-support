@@ -21,9 +21,12 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 <?php
 if(!$center_id) $all_batches = $all_centers_data;
 if(!$city_id) $all_batches = $all_cities_data;
+uasort($all_batches, 'sortByPercentage');
 
 if($all_batches) {
 	foreach ($all_batches as $batch_id => $batch) {
+		if(!$batch['name']) continue;
+
 		$count = $batch[$display_type];
 		$total = $batch['classes_total'];
 		$percentage = 0;

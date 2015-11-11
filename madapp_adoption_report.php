@@ -21,7 +21,7 @@ foreach ($all_centers as $center_id => $center) {
 $centers[0] = array('None');
 
 
-$city_id = i($QUERY, 'city_id', 1);
+$city_id = i($QUERY, 'city_id', 0);
 $center_id = i($QUERY, 'center_id', 0);
 $display_type = i($QUERY, 'display_type', 'volunteer_attendance');
 $all_batches = array();
@@ -93,6 +93,8 @@ if(isset($QUERY['action'])) {
 			
 		}
 	}
+
+	
 }
 
 $format = i($QUERY,'format', '');
@@ -101,3 +103,12 @@ if($format == 'csv') {
 	$template->options['insert_layout'] = false;
 }
 render($format);
+
+function sortByPercentage($a, $b) {
+	global $display_type;
+
+	if(!$a['classes_total']) return 1;
+	if(!$b['classes_total']) return -1;
+	return ($a[$display_type] / $a['classes_total']) < ($b[$display_type] / $b['classes_total']);
+}
+
