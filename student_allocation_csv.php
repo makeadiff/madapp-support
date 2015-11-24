@@ -1,7 +1,7 @@
 <?php
 require_once('./common.php');
 
-/// Script will output a CSV file with the format 'City,Center,Class Section, Student Name' for all the students in the given center.
+/// Script will output a CSV file with the format 'Student ID,City,Center,Class Section,Student Name' for all the students in the given center.
 
 if(!isset($QUERY['city_id'])) die("Please specify a City");
 
@@ -12,7 +12,7 @@ header('Content-Disposition: attachment; filename="Student.csv"');
 $city_id = $QUERY['city_id'];
 $city_name = $sql->getOne("SELECT name FROM City WHERE id=$city_id");
 
-$data = $sql->getAll("SELECT '$city_name' AS city, C.name AS center, CONCAT(L.grade, ' ', L.name) AS class_section, S.name AS student
+$data = $sql->getAll("SELECT S.id AS student_id, '$city_name' AS city, C.name AS center, CONCAT(L.grade, ' ', L.name) AS class_section, S.name AS student
 		FROM Student S 
 		INNER JOIN StudentLevel SL ON S.id=SL.student_id 
 		INNER JOIN Level L ON L.id=SL.level_id
