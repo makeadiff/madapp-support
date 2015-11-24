@@ -5,9 +5,9 @@ require_once('./common.php');
 
 if(!isset($QUERY['city_id'])) die("Please specify a City");
 
-// header("Content-type: text/plain");
-header("Content-type:text/octect-stream");
-header('Content-Disposition: attachment; filename="Student.csv"');
+header("Content-type: text/plain");
+// header("Content-type:text/octect-stream");
+// header('Content-Disposition: attachment; filename="Student.csv"');
 
 $city_id = $QUERY['city_id'];
 $city_name = $sql->getOne("SELECT name FROM City WHERE id=$city_id");

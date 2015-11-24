@@ -1,4 +1,6 @@
 <?php
+$year = 2015;
+
 if(isset($QUERY['format']) and $QUERY['format'] == 'csv') {
 	// Skip login
 } else {
@@ -13,7 +15,6 @@ if(isset($QUERY['format']) and $QUERY['format'] == 'csv') {
 		exit;
 	}
 
-	$year = 2015;
 	$user_id = $_SESSION['user_id'];
 	$current_user = $sql->from('User')->find($user_id);
 	$city_id = $current_user['city_id'];
