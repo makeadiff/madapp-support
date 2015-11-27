@@ -64,7 +64,7 @@ if(isset($QUERY['action'])) {
 			);
 		}
 
-		$all_classes = $sql->getAll("SELECT C.id, UC.id AS user_class_id, C.status, C.level_id, C.class_on, UC.user_id, UC.status AS user_status, UC.substitute_id, student_id, participation
+		$all_classes = $sql->getAll("SELECT C.id, UC.id AS user_class_id, UC.status, C.level_id, C.class_on, UC.user_id, UC.status AS user_status, UC.substitute_id, student_id, participation
 				FROM Class C
 				INNER JOIN UserClass UC ON C.id=UC.class_id 
 				LEFT JOIN StudentClass SC ON C.id=SC.class_id 
@@ -90,7 +90,6 @@ if(isset($QUERY['action'])) {
 				$all_centers_data[$b['center_id']]['student_attendance']++;
 				$all_cities_data[$b['city_id']]['student_attendance']++;
 			}
-			
 		}
 	}
 
