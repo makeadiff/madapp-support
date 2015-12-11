@@ -56,12 +56,13 @@ if(isset($QUERY['action'])) {
 		}
 
 		if(!isset($all_cities_data[$b['city_id']])) {
-			$all_cities_data[$b['city_id']] = array(
-				'name'					=> $all_cities[$b['city_id']],
-				'classes_total'			=> 0,
-				'volunteer_attendance'	=> 0,
-				'student_attendance'	=> 0,
-			);
+			if(isset($all_cities[$b['city_id']]))
+				$all_cities_data[$b['city_id']] = array(
+					'name'					=> $all_cities[$b['city_id']],
+					'classes_total'			=> 0,
+					'volunteer_attendance'	=> 0,
+					'student_attendance'	=> 0,
+				);
 		}
 
 		$all_classes = $sql->getAll("SELECT C.id, UC.id AS user_class_id, UC.status, C.level_id, C.class_on, UC.user_id, UC.status AS user_status, UC.substitute_id, student_id, participation
@@ -73,6 +74,7 @@ if(isset($QUERY['action'])) {
 		$class_done = array();
 		foreach ($all_classes as $c) {
 			if(isset($class_done[$c['user_class_id']])) continue; // If data is already marked, skip.
+			if(!isset($all_cities_data[$b['city_id']])) continue;
 			$class_done[$c['user_class_id']] = true;
 			if($c['class_on'] > date("Y-m-d H:i:s")) continue; // Don't count classes not happened yet.
 
