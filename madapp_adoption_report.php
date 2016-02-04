@@ -1,4 +1,5 @@
 <?php
+if(isset($_REQUEST['format']) and $_REQUEST['format'] == 'csv') $single_user = 1;
 require 'common.php';
 
 $html = new HTML;
@@ -33,6 +34,7 @@ if(isset($QUERY['action']) and $QUERY['action'] == 'Show') {
 
 $format = i($QUERY,'format', '');
 if($format == 'csv') {
+	$config['single_user'] = 1;
 	$format = 'csv.php';
 	$template->options['insert_layout'] = false;
 }
