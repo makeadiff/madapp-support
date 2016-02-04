@@ -1,7 +1,7 @@
 <?php
 $year = 2015;
 
-if(isset($QUERY['format']) and $QUERY['format'] == 'csv') {
+if(isset($config['single_user']) and $config['single_user']) {
 	// Skip login
 } else {
 	if($config['server_host'] == 'cli') $_SESSION['user_id'] = 1;
