@@ -19,23 +19,23 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 </form><br /><br />
 
 <?php
-if(!$center_id) $all_batches = $all_centers_data;
-if(!$city_id) $all_batches = $all_cities_data;
-uasort($all_batches, 'sortByPercentage');
+if(!$center_id) $all_units = $all_centers_data;
+if(!$city_id) $all_units = $all_cities_data;
+uasort($all_units, 'sortByPercentage');
 
-if($all_batches) {
-	foreach ($all_batches as $batch_id => $batch) {
-		if(!$batch['name']) continue;
+if($all_units) {
+	foreach ($all_units as $unit_id => $unit) {
+		if(!$unit['name']) continue;
 
-		$count = $batch[$display_type];
-		$total = $batch['classes_total'];
+		$count = $unit[$display_type];
+		$total = $unit['classes_total'];
 		$percentage = 0;
 		if($total) $percentage = $count / $total;
 		?>
-		<div id='loader<?php echo $batch_id ?>' class='batch_loader'>
-			<h2 class='label'><?php echo $batch['name']; ?></h2>
+		<div id='loader<?php echo $unit_id ?>' class='batch_loader'>
+			<h2 class='label'><?php echo $unit['name']; ?></h2>
 			<script type='text/javascript'> 
-				var loader<?php echo $batch_id ?> = $('#loader<?php echo $batch_id ?>').percentageLoader({width : 160, height : 160, progress : <?php echo $percentage ?>, value : '<?php echo $count ."/".$total ?>'});
+				var loader<?php echo $unit_id ?> = $('#loader<?php echo $unit_id ?>').percentageLoader({width : 160, height : 160, progress : <?php echo $percentage ?>, value : '<?php echo $count ."/".$total ?>'});
 			</script>
 		</div>
 		<?php

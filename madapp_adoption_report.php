@@ -3,7 +3,6 @@ if(isset($_REQUEST['format']) and $_REQUEST['format'] == 'csv') $single_user = 1
 require 'common.php';
 
 $html = new HTML;
-$year = 2015;
 
 $all_cities = $sql->getById("SELECT id,name FROM City WHERE type='actual' ORDER BY name");
 $all_cities[0] = 'Any';
