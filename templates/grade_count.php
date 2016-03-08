@@ -12,6 +12,7 @@ $fields = array(
 		'10'	=> '10',
 		'11'	=> '11',
 		'12'	=> '12',
+		'unassigned'=> 'Unassigned'
 	);
 showTable($data, $fields, "Center/Children Distribution");
 
@@ -28,9 +29,8 @@ function showTable($data, $fields, $title='', $options=array()) {
 	<?php 
 	foreach($data as $row) {
 		print "<tr>";
-		foreach ($fields as $key => $name) { 
-			print "<td>" . i($row, $key, '&nbsp;') . "</td>"; 
-
+		foreach ($fields as $key => $name) {
+			print "<td>" . i($row, $key, '&nbsp;') . "</td>";
 		} 
 		print "</tr>\n";
 	}
