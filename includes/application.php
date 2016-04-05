@@ -77,7 +77,7 @@ function email($to, $subject, $body, $from = '') {
 function get_mad_year_starting_date() {
 	$this_month = intval(date('m'));
 	$months = array();
-	$start_month = 4; // April
+	$start_month = 5; // May
 	$start_year = date('Y');
 	if($this_month < $start_month) $start_year = date('Y')-1;
 	return date('Y-m-d', mktime(0,0,0, $start_month, 1, $start_year));
