@@ -1,5 +1,5 @@
 <?php
-$year = 2015;
+$year = 2016;
 
 if((isset($config['single_user']) and $config['single_user']) or (isset($single_user) and $single_user)) {
 	// Skip login
@@ -120,4 +120,22 @@ function get_cycle($date = false) {
 	// return 0;
 
 	return $sql->getOne("SELECT MAX(id) FROM SS_Survey_Event");
+}
+
+function array2csv($data, $show_headers = true) {
+	if(!$data) return "";
+
+	$headers = array();
+	$output = '';
+	foreach($data as $row) {
+		if(!$headers) $headers = array_keys($row);
+
+		$output .= '"'. implode('","', array_values($row)) . '"' . "\n";
+	}
+	
+	if($show_headers) {
+		$headers = array_map("format", $headers);
+		$output =  '"' . implode('","', $headers) . '"' . "\n" . $output;
+	}
+	return $output;
 }

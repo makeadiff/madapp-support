@@ -21,21 +21,3 @@ $data = $sql->getAll("SELECT S.id AS student_id, '$city_name' AS city, C.name AS
 		ORDER BY C.name,L.grade, L.name,S.name");
 
 print array2csv($data);
-
-function array2csv($data, $show_headers = true) {
-	if(!$data) return "";
-
-	$headers = array();
-	$output = '';
-	foreach($data as $row) {
-		if(!$headers) $headers = array_keys($row);
-
-		$output .= '"'. implode('","', array_values($row)) . '"' . "\n";
-	}
-	
-	if($show_headers) {
-		$headers = array_map("format", $headers);
-		$output =  '"' . implode('","', $headers) . '"' . "\n" . $output;
-	}
-	return $output;
-}
