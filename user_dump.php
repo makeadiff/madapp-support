@@ -14,7 +14,7 @@ The vertical should be only one and the one in which he is active(Ed Support/Pro
 
 header("Content-type: text/plain");
 //header('Content-Disposition: attachment; filename="User.csv"');
-$year = '2015';
+
 $all_verticals = $sql->getById("SELECT id,name FROM Vertical");
 $data = $sql->getAll("SELECT U.name,U.email,U.phone,C.name as city_name, GROUP_CONCAT(G.type SEPARATOR ',') AS groups, GROUP_CONCAT(G.vertical_id SEPARATOR ',') AS vertical_ids
 		FROM `User` U 

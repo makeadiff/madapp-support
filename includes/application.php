@@ -53,9 +53,11 @@ function email($to, $subject, $body, $from = '') {
 	$username = "madapp@makeadiff.in";
 	$password = "Th3C0ll3ct|v3";
 	
-	$headers = array ('From' => $from,
+	$headers = array (
+		'From' => $from,
 		'To' => $to,
 		'Subject' => $subject);
+
 	$smtp = Mail::factory('smtp',
 		array ('host' => $host,
 			'auth' => true,

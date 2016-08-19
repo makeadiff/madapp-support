@@ -5,6 +5,8 @@
 var centers = <?php echo json_encode($centers); ?>;
 </script>
 
+<h1 class="title">MADApp Adoption Report</h1>
+
 <form action="" method="post" class="form-area">
 <?php 
 $html->buildInput("city_id", 'City', 'select', $city_id, array('options' => $all_cities));
@@ -21,6 +23,8 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 <?php
 if(!$center_id) $all_units = $all_centers_data;
 if(!$city_id) $all_units = $all_cities_data;
+if($center_id) $all_units = $all_batches;
+
 uasort($all_units, 'sortByPercentage');
 
 if($all_units) {
@@ -31,6 +35,7 @@ if($all_units) {
 		$total = $unit['classes_total'];
 		$percentage = 0;
 		if($total) $percentage = $count / $total;
+		
 		?>
 		<div id='loader<?php echo $unit_id ?>' class='batch_loader'>
 			<h2 class='label'><?php echo $unit['name']; ?></h2>

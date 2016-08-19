@@ -1,4 +1,5 @@
 <?php
+$single_user = 1;
 require_once('./common.php');
 
 /// Script will output a CSV file with the format 'Student ID,City,Center,Class Section,Student Name' for all the students in the given center.
