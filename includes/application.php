@@ -1,5 +1,5 @@
 <?php
-$year = 2016;
+$year = get_year();
 
 if((isset($config['single_user']) and $config['single_user']) or (isset($single_user) and $single_user)) {
 	// Skip login
@@ -74,6 +74,15 @@ function email($to, $subject, $body, $from = '') {
 	return true;
 }
 
+
+function get_year() {
+	$this_month = intval(date('m'));
+	$months = array();
+	$start_month = 5; // May
+	$start_year = date('Y');
+	if($this_month < $start_month) $start_year = date('Y')-1;
+	return $start_year;
+}
 
 /// Get the starting date of the current MAD year...
 function get_mad_year_starting_date() {

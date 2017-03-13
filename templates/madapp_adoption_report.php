@@ -24,6 +24,8 @@ $html->buildInput("action", '&nbsp;', 'submit', 'Show');
 if(!$center_id) $all_units = $all_centers_data;
 if(!$city_id) $all_units = $all_cities_data;
 if($center_id) $all_units = $all_batches;
+$national_count = 0;
+$national_total = 0;
 
 uasort($all_units, 'sortByPercentage');
 
@@ -32,7 +34,9 @@ if($all_units) {
 		if(!$unit['name']) continue;
 
 		$count = $unit[$display_type];
+		$national_count += $count;
 		$total = $unit['classes_total'];
+		$national_total += $total;
 		$percentage = 0;
 		if($total) $percentage = $count / $total;
 		
@@ -44,5 +48,16 @@ if($all_units) {
 			</script>
 		</div>
 		<?php
-	}	
+	}
+
+	$national_percentage = $national_count / $national_total;
+	?>
+	<div id='loader0' class='batch_loader'>
+		<h2 class='label'>National</h2>
+		<script type='text/javascript'> 
+			var loader0 = $('#loader0').percentageLoader({width : 160, height : 160, progress : <?php echo $national_percentage ?>, value : '<?php echo $national_count ."/".$national_total ?>'});
+		</script>
+	</div>
+	<?php
+
 }
