@@ -1,4 +1,5 @@
 <?php
+//	$config['single_user'] = 1; // :DEBUG: remove
 $year = get_year();
 
 if((isset($config['single_user']) and $config['single_user']) or (isset($single_user) and $single_user)) {
