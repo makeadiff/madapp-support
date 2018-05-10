@@ -52,7 +52,7 @@ function email($to, $subject, $body, $from = '') {
 	// SMTP info here!
 	$host = "smtp.gmail.com";
 	$username = "madapp@makeadiff.in";
-	$password = "Th3C0ll3ct|v3";
+	$password = "madappgonemad";
 	
 	$headers = array (
 		'From' => $from,
@@ -73,16 +73,6 @@ function email($to, $subject, $body, $from = '') {
 	}
 	
 	return true;
-}
-
-
-function get_year() {
-	$this_month = intval(date('m'));
-	$months = array();
-	$start_month = 5; // May
-	$start_year = date('Y');
-	if($this_month < $start_month) $start_year = date('Y')-1;
-	return $start_year;
 }
 
 /// Get the starting date of the current MAD year...
