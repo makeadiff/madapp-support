@@ -123,21 +123,3 @@ function get_cycle($date = false) {
 
 	return $sql->getOne("SELECT MAX(id) FROM SS_Survey_Event");
 }
-
-function array2csv($data, $show_headers = true) {
-	if(!$data) return "";
-
-	$headers = array();
-	$output = '';
-	foreach($data as $row) {
-		if(!$headers) $headers = array_keys($row);
-
-		$output .= '"'. implode('","', array_values($row)) . '"' . "\n";
-	}
-	
-	if($show_headers) {
-		$headers = array_map("format", $headers);
-		$output =  '"' . implode('","', $headers) . '"' . "\n" . $output;
-	}
-	return $output;
-}
