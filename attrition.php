@@ -1,5 +1,5 @@
 <?php
-require('../common.php');
+require('../common/common.php');
 
 $template->title = "Volunteer Attrition";
 $user_type = 'let_go';
